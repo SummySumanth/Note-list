@@ -57,7 +57,7 @@
 	</div>
 
 	<!-- Save new message modal -->
-	<div class="modal-overlay" id="modal-overlay-new-message">
+	<div class="modal-overlay save-modal" id="modal-overlay-new-message">
 		<div class="small-10 columns  modal-window" id="modal-window">
 
 			<i class="material-icons modal-close-button" id="save-modal-close-btn">
@@ -111,17 +111,17 @@
 				
 				<div class="small-2 columns crsr-dflt" >
 					<span class="save-button" id="save-modal-save-btn">
-					<i class="material-icons label-icon">
-						save
-					</i>  Save
-				</span>
+						<i class="material-icons label-icon">
+							save
+						</i>  Save
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
 
-
 	<!-- Edit message modal -->
-	<div class="modal-overlay" id="modal-overlay-edit-message">
+	<div class="modal-overlay edit-modal" id="modal-overlay-edit-message">
 		<div class="small-10 columns  modal-window" id="modal-window">
 
 			<i class="material-icons modal-close-button" id="edit-modal-close-btn">
@@ -174,16 +174,54 @@
 				</div>
 				
 				<div class="small-2 columns crsr-dflt" >
-					<span class="save-button" id="edit-modal-save-btn">
-					<i class="material-icons label-icon">
-						save
-					</i>  Save
-				</span>
+					<span class="edit-button" id="edit-modal-save-btn">
+						<i class="material-icons label-icon">
+							save
+						</i>  Edit
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
 
+	<!-- Delete message modal -->
+	<div class="modal-overlay delete-modal" id="modal-overlay-edit-message">
+		<div class="small-10 columns  modal-window" id="modal-window">
 
+			<i class="material-icons modal-close-button" id="edit-modal-close-btn">
+				close
+			</i>
+
+			<div class="row custom-row-modal" style="margin-bottom: 25px" >
+				<div class="small-12"> <i class="material-icons label-icon" style="font-size: 75px">warning</i> Are you sure you want to delete this message?</div>
+			</div>
+			
+			
+			<div class="row " >
+				<div class="small-2"></div>
+
+				<div class="small-3 columns crsr-dflt yup-button"  >
+					<span class="" id="delete-modal-yup-btn">
+						<i class="material-icons label-icon">
+							thumb_up
+						</i>  Yup
+					</span>
+				</div>
+
+				<div class="small-2"></div>
+
+				<div class="small-3 columns crsr-dflt nope-button" >
+					<span class="" id="delete-modal-nope-btn">
+						<i class="material-icons label-icon">
+							thumb_down
+						</i>  Nope
+					</span>
+				</div>
+
+				<div class="small-2"></div>
+			</div>
+		</div>
+	</div>
 
 </div>
 
