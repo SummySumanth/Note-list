@@ -36,7 +36,7 @@ function getAllNames(){
 	request.onsuccess = function (event) {
 		var	cursor = event.target.result;
 		if(cursor){
-			console.log(cursor.value);
+			console.log(cursor.value.stuName);
 			cursor.continue()
 		}
 	}
