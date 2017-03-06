@@ -1,3 +1,11 @@
+.magictime {
+-webkit-animation-duration: 0.5s;
+-moz-animation-duration: 0.5s;
+-o-animation-duration: 0.5s;
+animation-duration: 0.5s;
+}
+
+
 body {
     background-color: #f4f4f4 !important;
     color: #212121 !important;
@@ -79,6 +87,7 @@ i{
 	margin-bottom: 20px;
 }
 .add-message{
+	cursor: pointer;
 	margin: 20px;
 	background-color: #fff;
 	height: 70px;
@@ -191,6 +200,7 @@ i{
 }
 
 .modal-close-button{
+	cursor: pointer;
 	display:block; 
 	position:absolute; 
 	top:7px; 
