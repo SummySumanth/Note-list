@@ -120,7 +120,68 @@
 	</div>
 
 
+	<!-- Edit message modal -->
+	<div class="modal-overlay" id="modal-overlay-edit-message">
+		<div class="small-10 columns  modal-window" id="modal-window">
 
+			<i class="material-icons modal-close-button" id="edit-modal-close-btn">
+				close
+			</i>
+
+			<div class="row custom-row-modal" >
+				<div class="small-6 columns custom-columns text-center" >
+					<span class="small-12 columns crsr-dflt" > <i class="material-icons label-icon" >turned_in_not</i>  Subject</span>
+					<input class="small-12 columns custom-input-field " id="edit-modal-subject" type="text" placeholder="Subject">
+				</div>
+
+				<div class="small-6 columns">
+					<span class="small-12 columns crsr-dflt" > <i class="material-icons label-icon" >color_lens</i>  Color</span>
+					<select id="edit-modal-color-select">
+						<option value="White">White</option>
+						<option value="White">Red</option>
+						<option value="White">Orange</option>
+						<option value="Orange">Yellow</option>
+						<option value="Grey">Grey</option>
+						<option value="Yellow">Blue</option>
+						<option value="Teal">Teal</option>
+						<option value="Grey">Green</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="row custom-row">
+				<div class="small-12 columns custom-columns text-center"></div>
+				<span class="small-12 columns crsr-dflt" > <i class="material-icons label-icon" >message</i> Message</span>
+				<textarea class="text-field" id="edit-modal-message-area" placeholder="Your Message Here" rows="9"></textarea>
+			</div>
+			
+			<div class="row" >
+				<div class="small-5 columns custom-columns text-left" >
+					<span > 
+						<i class="material-icons label-icon">
+							person
+						</i>
+						Author <input class="small-6 columns custom-input-field" id="edit-modal-name" type="text" placeholder="Your Name" />
+					</span>
+				</div>
+				
+				<div class="small-5 columns custom-columns">
+					<span class="text-center crsr-dflt">
+						<i class="material-icons label-icon">
+							access_time
+						</i>  <span id="edit-modal-current-time">dd/mm/yy hh:mm:ss</span>
+					</span>
+				</div>
+				
+				<div class="small-2 columns crsr-dflt" >
+					<span class="save-button" id="edit-modal-save-btn">
+					<i class="material-icons label-icon">
+						save
+					</i>  Save
+				</span>
+			</div>
+		</div>
+	</div>
 
 
 
