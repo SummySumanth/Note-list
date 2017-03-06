@@ -25,7 +25,10 @@ function addName() {
 	request.onsuccess = function(event){
 		var result = event.target.result;
 		console.log(result);
-		getAllNames ();
+		setTimeout(function(){
+			getAllNames ();
+		},1000);
+		
 	}
 }
 
@@ -33,11 +36,50 @@ function getAllNames(){
 	let transaction = db.transaction(["nameTbl"],"readwrite");
 	let objectStore = transaction.objectStore("nameTbl");
 	let request = objectStore.openCursor();
+	$('#tableBody').empty();
 	request.onsuccess = function (event) {
 		var	cursor = event.target.result;
+
 		if(cursor){
-			console.log(cursor.value.stuName);
+			console.log(cursor.value);
+			$('#tableBody').append(`<tr>
+				<td>${cursor.value.itemId}</td>
+				<td>${cursor.value.stuName}</td>
+				<td>${cursor.value.stuSub}</td>
+				<td>
+					<input type="button" id="${cursor.value.itemId}" class="edit" value="Edit">
+					<input type="button" id="${cursor.value.itemId}" class="delete" value="Delete">
+				</td>
+				</tr>`);
 			cursor.continue()
 		}
+	}
+}
+
+function editNameSubject(){
+	let transaction = db.transaction(["nameTbl"],"readwrite");
+	let objectStore = transaction.objectStore("nameTbl");
+	
+	let editedObj = {stuName:n, stuSub:s, itemID:id}
+
+	// id ID exists, it will modify the entry, if not it will edit the entry
+	var request = objectStore.put(editedObj);
+	request.onsuccess = function(event){
+		var obj = event.target.result;
+		console.log(obj);
+	}
+}
+
+function deleteName(){
+	let transaction = db.transaction(["nameTbl"],"readwrite");
+	let objectStore = transaction.objectStore("nameTbl");
+	
+	let editedObj = {stuName:n, stuSub:s, itemID:id}
+
+	// id ID exists, it will modify the entry, if not it will edit the entry
+	var request = objectStore.delete(id);
+	request.onsuccess = function(event){
+		var obj = event.target.result;
+		console.log(obj);
 	}
 }
