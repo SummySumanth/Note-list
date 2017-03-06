@@ -4,48 +4,209 @@
 	<title>Note List</title>
 </head>
 <body>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+	<link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Sansita" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation-flex.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/animate.css">
-	<!-- <meta http-equiv="refresh" content="3"> -->
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- <meta http-equiv="refresh" content="10"> -->
 	
 
 	<div class="row custom-row">
-		<div class="small-1 medium-3 columns">
+		<div class="small-1 medium-2 columns">
 		</div>
-		<div class="small-10 medium-6 small-centered columns custom-columns add-message">
+		<div class="small-10 medium-8 small-centered columns custom-columns add-message">
 			<i class="material-icons" style="color: #ddd; font-size: 50px; margin-top: 1px;">note_add</i>
 		</div>
-		<div class="small-1 medium-3 columns">	
+		<div class="small-1 medium-2 columns">	
 		</div>
 	</div>
 
 	<div class="row custom-row">
 		<div class="small-1 medium-2 columns">
 		</div>
-		<div class="small-10 medium-8 small-centered columns custom-columns message bg-red">
-			<div class="row">
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-white">
+			<div class="row message-preview">
 				<div class="small-4 columns" style="text-align: left">
 					<span class="msg-subject" >Subject</span>
 				</div>
 				<div class="small-4 columns">
-					<span class="msg-subject" >Date and time</span>
+					<span class="msg-date-time" >Date and time</span>
 				</div>
-				<div class="small-4 columns">
-					<span class="msg-subject" >View</span>
-					<span class="msg-subject" >Edit</span>
-					<span class="msg-subject" >Delete</span>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
 				</div>
 			</div>
 		</div>
 		<div class="small-1 medium-2 columns">	
 		</div>
 	</div>
+
+	<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-red">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-orange">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-yellow">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-grey">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-blue">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-teal">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
+		<div class="row custom-row">
+		<div class="small-1 medium-2 columns">
+		</div>
+		<div class="small-10 medium-8 small-centered columns custom-columns message-container bg-green">
+			<div class="row message-preview">
+				<div class="small-4 columns" style="text-align: left">
+					<span class="msg-subject" >Subject</span>
+				</div>
+				<div class="small-4 columns">
+					<span class="msg-date-time" >Date and time</span>
+				</div>
+				<div class="small-4 columns" style="text-align: right">
+					<i class="material-icons msg-prv-controllers">open_in_new</i>
+					<i class="material-icons msg-prv-controllers">mode_edit</i>
+					<i class="material-icons msg-prv-controllers">delete</i>
+				</div>
+			</div>
+		</div>
+		<div class="small-1 medium-2 columns">	
+		</div>
+	</div>
+
 	
 	
 	<script src="js/jquery-1.11.1.min.js"></script>
