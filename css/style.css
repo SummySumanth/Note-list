@@ -128,42 +128,42 @@ i{
 	font-style: bold;
 }
 .bg-white{
-	background-color: #fff;
+	background-color: #fff !important;
 	color: #474747;
 }
 
 .bg-red{
-	background-color: rgb(255, 138, 128);
+	background-color: rgb(255, 138, 128) !important;
 	color: #474747;
 }
 
 .bg-orange{
-	background-color: rgb(255, 209, 128);
+	background-color: rgb(255, 209, 128) !important;
 	color: #474747;
 }
 
 .bg-yellow{
-	background-color: rgb(255, 255, 141);
+	background-color: rgb(255, 255, 141) !important;
 	color: #474747;
 }
 
 .bg-grey{
-	background-color: rgb(207, 216, 220);
+	background-color: rgb(207, 216, 220) !important;
 	color: #474747;
 }
 
 .bg-blue{
-	background-color: rgb(128, 216, 255);
+	background-color: rgb(128, 216, 255) !important;
 	color: #474747;
 }
 
 .bg-teal{
-	background-color: rgb(167, 255, 235);
+	background-color: rgb(167, 255, 235) !important;
 	color: #474747;
 }
 
 .bg-green{
-	background-color: rgb(204, 255, 144);
+	background-color: rgb(204, 255, 144) !important;
 	color: #474747;
 }
 

@@ -7,7 +7,8 @@ let $successMessageModal = $('#modal-overlay-success-message');
 let $successModalOkayButton = $('#success-modal-okay-btn');
 let $successModalCloseButton = $('#success-modal-close-btn');
 
-
+let $viewMessageModal = $('#modal-overlay-view-message');
+let $viewMessageModalCloseBtn = $('#view-modal-close-btn');
 
 let $messagePreviewContainer = $('#message-preview-container');
 
@@ -94,7 +95,7 @@ let getAllMessagePreview = () =>{
 			cursor.continue();
 			$('#open-message-btn-' + messageID).on('click', () =>{
 				console.log('open message clicked, id is ' + messageID );
-				viewMessage(messaageID);
+				viewMessage(messageID);
 			});
 		}
 	}
@@ -179,11 +180,44 @@ $successModalCloseButton.on('click', () =>{
 	}, 500);
 });
 
-//Show Message
-let viewMessage = (messageID) =>{
-
+let setViewMessageValues = (subject, message, author, timeStamp) =>{
+	$('#view-modal-Subject-content').html(subject);
+	$('#view-modal-Subject-message').html(message);
+	$('#view-modal-Subject-author').html(author);
+	$('#view-modal-current-time').html(`${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} @ ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}`);
 }
 
+//Show Message
+let viewMessage = (messageID) =>{
+	let transaction = db.transaction(["messageTable"],"readwrite");
+	let objectStore = transaction.objectStore("messageTable");
+	let request = objectStore.get(messageID);
+
+	let subject;
+	let message;
+	let author;
+	let time;
+
+	request.onsuccess = function(event){
+		if(request.result) {
+			console.log(request.result.Color);
+			subject = request.result.Subject;
+			message = request.result.Message;
+			author = request.result.Name;
+			time = request.result.Timestamp[0];
+		}
+	}
+
+	setViewMessageValues(subject, message, author, time);
+	$viewMessageModal
+		.css('display', 'block')
+		.removeClass('animated fadeOut')
+		.addClass('animated fadeIn');
+}
+
+$viewMessageModalCloseBtn.on('click', () =>{
+
+});
 
 //get all messages
 $( document ).on('ready',() =>{
