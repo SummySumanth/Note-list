@@ -7,6 +7,8 @@ let $successMessageModal = $('#modal-overlay-success-message');
 let $successModalOkayButton = $('#success-modal-okay-btn');
 let $successModalCloseButton = $('#success-modal-close-btn');
 
+
+
 let $messagePreviewContainer = $('#message-preview-container');
 
 let db;
@@ -55,7 +57,7 @@ let constructMessagePreview = (messageID, name, subject, message, color, timeSta
 									<span class="msg-date-time" >${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} @ ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}</span>
 								</div>
 								<div class="small-4 columns text-right">
-									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
+									<i id="open-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
 									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
 									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
 								</div>
@@ -90,6 +92,10 @@ let getAllMessagePreview = () =>{
 			$('#message-preview-container').prepend(messagePreview);
 
 			cursor.continue();
+			$('#open-message-btn-' + messageID).on('click', () =>{
+				console.log('open message clicked, id is ' + messageID );
+				viewMessage(messaageID);
+			});
 		}
 	}
 }
@@ -173,9 +179,15 @@ $successModalCloseButton.on('click', () =>{
 	}, 500);
 });
 
+//Show Message
+let viewMessage = (messageID) =>{
+
+}
+
+
+//get all messages
 $( document ).on('ready',() =>{
 	setTimeout(()=>{
 		getAllMessagePreview();
-	},1000)
-	
+	},1000);
 })
