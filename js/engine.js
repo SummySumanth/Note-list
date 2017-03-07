@@ -14,6 +14,11 @@ let $editMessageModal = $('#modal-overlay-edit-message');
 let $editMessageModalCloseBtn = $('#edit-modal-close-btn');
 let $editMessageModalSaveBtn = $('#edit-modal-save-btn');
 
+let $deleteMessageModal = $('#modal-overlay-delete-message');
+let $deleteMessageModalCloseBtn = $('#delete-modal-close-btn');
+let $deleteMessageModalNopeBtn = $('#delete-modal-nope-btn');
+let $deleteMessageModalYupBtn = $('#delete-modal-yup-btn');
+
 let $messagePreviewContainer = $('#message-preview-container');
 
 let db;
@@ -21,7 +26,6 @@ let request = window.indexedDB.open("notePad2", 3);
 
 request.onsuccess = (event) => {
 	db = event.target.result;
-	console.log("Database loaded successfully\n");
 };
 
 request.onerror = (event) => {
@@ -31,7 +35,6 @@ request.onerror = (event) => {
 
 request.onupgradeneeded = (event) => {
 	db = event.target.result;
-	console.log("Database has been initialized successfully\n");
 	db.createObjectStore("messageTable",{keyPath:"messageID", autoIncrement:true});
 };
 
@@ -45,25 +48,23 @@ let addNewMessage = (name, subject, message, color, timeStamp) => {
 	let request = objectStore.add({Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp});
 
 	request.onsuccess = (event) => {
-		console.log('added to db successfully');
 	}
 }
 
 let editMessage = (msgID, name, subject, message, color, timeStamp) => {
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
-	let editedObj = {messageID: msgID, Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp}
-
-	// id ID exists, it will modify the entry, if not it will edit the entry
-	console.log('got message id as ' + msgID);
+	let editedObj = {messageID: msgID, Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp}	
 	var request = objectStore.put(editedObj);
 	request.onsuccess = function(event){
-		var obj = event.target.result;
-		console.log(obj);
 	}
+}
 
-	request.onsuccess = (event) => {
-		console.log('added to db successfully');
+let deleteMessage = (msgID) =>{
+	let transaction = db.transaction(["messageTable"],"readwrite");
+	let objectStore = transaction.objectStore("messageTable");
+	var request = objectStore.delete(msgID);
+	request.onsuccess = function(event){
 	}
 }
 
@@ -86,7 +87,7 @@ let constructMessagePreview = (messageID, name, subject, message, color, timeSta
 								<div class="small-4 columns text-right">
 									<i id="open-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
 									<i id="edit-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
-									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
+									<i id="delete-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
 								</div>
 							</div>
 						</div>
@@ -100,14 +101,13 @@ let getAllMessagePreview = () =>{
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
 	let request = objectStore.openCursor();
+	
 	$messagePreviewContainer.empty();
-
+	
 	request.onsuccess = function (event) {
 		var	cursor = event.target.result;
-
+		
 		if(cursor){
-			console.log(cursor.value);
-
 			let messageID = cursor.value.messageID;
 			let name = cursor.value.Name;
 			let subject = cursor.value.Subject;
@@ -117,16 +117,17 @@ let getAllMessagePreview = () =>{
 
 			let messagePreview = constructMessagePreview(messageID, name, subject, message, color, time);
 			$('#message-preview-container').prepend(messagePreview);
-
 			cursor.continue();
 			$('#open-message-btn-' + messageID).on('click', () =>{
-				console.log('open message clicked, id is ' + messageID );
 				viewMessage(messageID);
 			});
 
 			$('#edit-message-btn-' + messageID).on('click', () =>{
-				console.log('edit message clicked, id is ' + messageID );
 				showEditMessageModal(messageID);
+			});
+
+			$('#delete-message-btn-' + messageID).on('click', () =>{
+				showDeleteMessageModal(messageID);
 			});
 		}
 	}
@@ -210,7 +211,6 @@ let setEditMessageModalFields = (messageID) =>{
 
 	request.onsuccess = function(event){
 		if(request.result) {
-			console.log(request.result.messageID);
 			$('#modal-overlay-edit-message').data("messageID", request.result.messageID);
 			$('#edit-modal-subject').val(request.result.Subject);
 			$('#edit-modal-color-select').val(request.result.Color);
@@ -239,7 +239,6 @@ $editMessageModalSaveBtn.on('click', () =>{
 	let $color  = $('#edit-modal-color-select').val();
 	let $name  = $('#edit-modal-name').val();
 	let $msgID = $('#modal-overlay-edit-message').data("messageID");
-	console.log($msgID);
 	let time = [{
 					"date": currentdate.getDate(),
 					"month": currentdate.getMonth(),
@@ -264,6 +263,47 @@ $editMessageModalCloseBtn.on('click', () =>{
 	}, 500);
 });
 
+//Delete message modal
+let showDeleteMessageModal = (messageID) =>{
+	$deleteMessageModal.data("messageID", messageID);
+	$deleteMessageModal
+		.css('display', 'block')
+		.removeClass('animated fadeOut')
+		.addClass('animated fadeIn');
+}
+let hideDeleteMessageModal = () =>{
+	$deleteMessageModal
+		.removeClass('animated fadeIn')
+		.addClass('animated fadeOut');
+}
+
+$deleteMessageModalYupBtn.on('click', () =>{
+	let $msgID = $('#modal-overlay-delete-message').data("messageID");
+	deleteMessage($msgID);
+	hideDeleteMessageModal();
+	getAllMessagePreview();
+	setTimeout(() =>{
+		$deleteMessageModal.css('display', 'none');
+		showMessage(' Message has been successfully deleted');
+	}, 1000);
+})
+
+$deleteMessageModalCloseBtn.on('click', () =>{
+	hideDeleteMessageModal();
+	setTimeout(() =>{
+		$deleteMessageModal.css('display', 'none');
+	}, 500);
+});
+
+$deleteMessageModalNopeBtn.on('click', () =>{
+	hideDeleteMessageModal();
+	setTimeout(() =>{
+		$deleteMessageModal.css('display', 'none');
+	}, 500);
+});
+
+
+//#######################################################
 // Success Message Modal
 let showSuccessMessageModal = (message) =>{
 	$('#success-modal-message').html(message);
@@ -318,21 +358,14 @@ let viewMessage = (messageID) =>{
 
 	request.onsuccess = function(event){
 		if(request.result) {
-			console.log(request.result.Color);
 			subject = request.result.Subject;
 			message = request.result.Message;
 			author = request.result.Name;
 			time = request.result.Timestamp[0];
-			console.log('time from view meessage');
-			console.log(subject);
-			console.log(message);
-			console.log(author);
-			console.log(time);
 			setViewMessageValues(subject, message, author, time);
 		}
 	}
 
-	
 	$viewMessageModal
 		.css('display', 'block')
 		.removeClass('animated fadeOut')

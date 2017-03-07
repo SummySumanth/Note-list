@@ -13,6 +13,10 @@ body {
     text-rendering: optimizeLegibility !important;
 }
 
+.pointer-cursor{
+	cursor: pointer !important;
+}
+
 i.btn{
 	cursor: pointer;
 	-webkit-touch-callout: none; /* iOS Safari */
@@ -25,7 +29,7 @@ i.btn{
 }
 
 i{
-	cursor: default;
+	/*cursor: default;*/
 	-webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
