@@ -191,7 +191,6 @@ i{
 }
 
 .modal-overlay{
-  /*opacity: 0;*/
   background-color: rgba(0,0,0,0.5);
   top: 0;
   left: 0;
@@ -202,7 +201,6 @@ i{
 
 .modal-window{
   background-color: #FFF;
-  /*width: 60%;*/
   position: relative;
   margin: 0px auto;
   margin-top: 10%;
