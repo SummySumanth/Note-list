@@ -27,8 +27,7 @@ function addName() {
 		console.log(result);
 		setTimeout(function(){
 			getAllNames ();
-		},1000);
-		
+		},1000);		
 	}
 }
 

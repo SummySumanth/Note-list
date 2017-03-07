@@ -1,3 +1,11 @@
+.magictime {
+-webkit-animation-duration: 0.5s;
+-moz-animation-duration: 0.5s;
+-o-animation-duration: 0.5s;
+animation-duration: 0.5s;
+}
+
+
 body {
     background-color: #f4f4f4 !important;
     color: #212121 !important;
@@ -79,6 +87,7 @@ i{
 	margin-bottom: 20px;
 }
 .add-message{
+	cursor: pointer;
 	margin: 20px;
 	background-color: #fff;
 	height: 70px;
@@ -119,42 +128,42 @@ i{
 	font-style: bold;
 }
 .bg-white{
-	background-color: #fff;
+	background-color: #fff !important;
 	color: #474747;
 }
 
 .bg-red{
-	background-color: rgb(255, 138, 128);
+	background-color: rgb(255, 138, 128) !important;
 	color: #474747;
 }
 
 .bg-orange{
-	background-color: rgb(255, 209, 128);
+	background-color: rgb(255, 209, 128) !important;
 	color: #474747;
 }
 
 .bg-yellow{
-	background-color: rgb(255, 255, 141);
+	background-color: rgb(255, 255, 141) !important;
 	color: #474747;
 }
 
 .bg-grey{
-	background-color: rgb(207, 216, 220);
+	background-color: rgb(207, 216, 220) !important;
 	color: #474747;
 }
 
 .bg-blue{
-	background-color: rgb(128, 216, 255);
+	background-color: rgb(128, 216, 255) !important;
 	color: #474747;
 }
 
 .bg-teal{
-	background-color: rgb(167, 255, 235);
+	background-color: rgb(167, 255, 235) !important;
 	color: #474747;
 }
 
 .bg-green{
-	background-color: rgb(204, 255, 144);
+	background-color: rgb(204, 255, 144) !important;
 	color: #474747;
 }
 
@@ -165,9 +174,18 @@ i{
 .edit-modal{
 	display: none;
 }
+
+.view-modal{
+	display: none;
+}
 .delete-modal{
 	display: none;
 }
+
+.success-modal{
+	display: none;
+}
+
 .modal-overlay{
   /*opacity: 0;*/
   background-color: rgba(0,0,0,0.5);
@@ -191,6 +209,7 @@ i{
 }
 
 .modal-close-button{
+	cursor: pointer;
 	display:block; 
 	position:absolute; 
 	top:7px; 

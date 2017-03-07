@@ -13,6 +13,7 @@
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation-flex.css">
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
+	<link rel="stylesheet" type="text/css" href="css/magic.css">
 
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -32,29 +33,31 @@
 
 
 	<!-- Message preview card -->
-	<div class="row custom-row">
-		<div class="small-1 medium-2 columns">
-		</div>
-
-		<div class="small-10 medium-8 columns custom-columns message-container ## bg-white ##">
-			<div class="row message-preview">
-				<div class="small-4 columns text-left">
-					<span class="msg-subject" >#Subject#</span>
-				</div>
-				<div class="small-4 columns">
-					<span class="msg-date-time" >#Date and time#</span>
-				</div>
-				<div class="small-4 columns text-right">
-					<i class="material-icons msg-prv-controllers open-message btn">open_in_new</i>
-					<i class="material-icons msg-prv-controllers edit-message btn">mode_edit</i>
-					<i class="material-icons msg-prv-controllers delete-message btn">delete</i>
+	<div id="message-preview-container">
+		<!-- <div class="row custom-row">
+			<div class="small-1 medium-2 columns">
+			</div>
+			<div  id="messageID" class="small-10 medium-8 columns custom-columns message-container animated slideInDown ## bg-white ##">
+				<div class="row message-preview">
+					<div class="small-4 columns text-left">
+						<span class="msg-subject" >#Subject#</span>
+					</div>
+					<div class="small-4 columns">
+						<span class="msg-date-time" >dd - mm - yyyy | hh : mm : ss</span>
+					</div>
+					<div class="small-4 columns text-right">
+						<i class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
+						<i class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
+						<i class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
+					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="small-1 medium-2 columns">	
-		</div>
+			<div class="small-1 medium-2 columns">	
+			</div>
+		</div> -->
 	</div>
+		
+	<!-- Modals -->
 
 	<!-- Save new message modal -->
 	<div class="modal-overlay save-modal" id="modal-overlay-new-message">
@@ -73,14 +76,14 @@
 				<div class="small-6 columns">
 					<span class="small-12 columns crsr-dflt" > <i class="material-icons label-icon" >color_lens</i>  Color</span>
 					<select id="save-modal-color-select">
-						<option value="White">White</option>
-						<option value="White">Red</option>
-						<option value="White">Orange</option>
-						<option value="Orange">Yellow</option>
-						<option value="Grey">Grey</option>
-						<option value="Yellow">Blue</option>
-						<option value="Teal">Teal</option>
-						<option value="Grey">Green</option>
+						<option value="bg-white">White</option>
+						<option value="bg-red">Red</option>
+						<option value="bg-orange">Orange</option>
+						<option value="bg-yellow">Yellow</option>
+						<option value="bg-grey">Grey</option>
+						<option value="bg-blue">Blue</option>
+						<option value="bg-teal">Teal</option>
+						<option value="bg-green">Green</option>
 					</select>
 				</div>
 			</div>
@@ -184,16 +187,64 @@
 		</div>
 	</div>
 
+	<!-- view message modal -->
+	<div class="modal-overlay view-modal" id="modal-overlay-view-message">
+		<div class="small-10 columns  modal-window " id="modal-window">
+
+			<i class="material-icons modal-close-button" id="view-modal-close-btn">
+				close
+			</i>
+
+			<div class="row custom-row-modal" >
+				<div class="small-12 columns custom-columns text-left" style="color: #999999" >
+					<span class="small-12 columns crsr-dflt" > <i class="material-icons label-icon" >turned_in_not</i> <span id="Subject-content" style="color: #0a0a0a">Hello World</span></span>
+				</div>
+
+			</div>
+			
+			<div class="row custom-row">
+				
+				<span class="small-12 columns crsr-dflt text-left" style="margin-top: 10px; margin-bottom:10px; padding-top: 10px; padding-bottom: 10px;background-color: #dadada;     border-radius: 5px; color: #999999"> <i class="material-icons label-icon" >message</i> <span id="Subject-message" style="color: #404040">This is a paragraph</span></span>
+				<!-- <p class="small-12 columns" style="padding: 5px 0px 20px 0px; text-align: center;">This is a pareagrah</p> -->
+			</div>
+			
+			<div class="row custom-row" style="margin-top: 20px;">
+				<div class="small-6 columns text-left" >
+					<span > 
+						<i class="material-icons label-icon">
+							person
+						</i>
+						<span id="Subject-author" style="color: #0a0a0a">Author</span>
+					</span>
+				</div>
+				
+				<div class="small-6 columns custom-columns text-right">
+					<span class="text-center crsr-dflt">
+						<i class="material-icons label-icon">
+							access_time
+						</i>  <span id="view-modal-current-time">dd/mm/yy hh:mm:ss</span>
+					</span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
 	<!-- Delete message modal -->
-	<div class="modal-overlay delete-modal" id="modal-overlay-edit-message">
+	<div class="modal-overlay delete-modal" id="modal-overlay-delete-message">
 		<div class="small-10 columns  modal-window" id="modal-window">
 
-			<i class="material-icons modal-close-button" id="edit-modal-close-btn">
+			<i class="material-icons modal-close-button" id="delete-modal-close-btn">
 				close
 			</i>
 
 			<div class="row custom-row-modal" style="margin-bottom: 25px" >
-				<div class="small-12"> <i class="material-icons label-icon" style="font-size: 75px">warning</i> Are you sure you want to delete this message?</div>
+				<div class="small-12"> 
+					<i class="material-icons label-icon" style="font-size: 75px">
+						warning
+					</i> 
+					Are you sure you want to delete this message?
+				</div>
 			</div>
 			
 			
@@ -223,10 +274,44 @@
 		</div>
 	</div>
 
-</div>
+
+	<!-- success message modal -->
+	<div class="modal-overlay success-modal" id="modal-overlay-success-message">
+		<div class="small-10 columns  modal-window" id="modal-window">
+
+			<i class="material-icons modal-close-button" id="success-modal-close-btn">
+				close
+			</i>
+
+			<div class="row custom-row-modal" style="margin-bottom: 25px" >
+				<div class="small-12"> 
+					<i class="material-icons label-icon" style="font-size: 75px">
+						info_outline
+					</i> 
+					<span id="success-modal-message"> This is the success message</span>
+				</div>
+			</div>
+
+
+			<div class="row " >
+				<div class="small-5 columns"></div>
+
+				<div class="small-2 columns crsr-dflt yup-button"  >
+					<span class="" id="success-modal-okay-btn">
+						<i class="material-icons label-icon">
+							done
+						</i>  okay
+					</span>
+				</div>
+
+				<div class="small-5 columns"></div>
+
+			</div>
+		</div>
+	</div>
 
 
 <script src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/engine2.js"></script> 
+<script type="text/javascript" src="js/engine.js"></script> 
 </body>
 </html>
