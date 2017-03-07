@@ -1,4 +1,5 @@
 let $addNewMessage = $('#add-message');
+
 let $saveMessageModal = $('#modal-overlay-new-message');
 let $saveMessageCloseBtn = $('#save-modal-close-btn');
 let $saveMessageSaveBtn = $('#save-modal-save-btn');
@@ -19,6 +20,8 @@ let $deleteMessageModalCloseBtn = $('#delete-modal-close-btn');
 let $deleteMessageModalNopeBtn = $('#delete-modal-nope-btn');
 let $deleteMessageModalYupBtn = $('#delete-modal-yup-btn');
 
+let $timer = ('#save-modal-current-time');
+
 let $messagePreviewContainer = $('#message-preview-container');
 
 let animationFlowDown = 'slideInDown';
@@ -27,14 +30,11 @@ let animationFlowUp = 'slideInUp';
 let db;
 let request = window.indexedDB.open("notePad2", 3);
 
-request.onsuccess = (event) => {
-	db = event.target.result;
-};
+const timeoutDuration = 700;
+const intervalDuration = 1000;
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
-request.onerror = (event) => {
-	console.log("Error in loading database\n");
-	console.log(request);
-};
+request.onsuccess = (event) => 	db = event.target.result;
 
 request.onupgradeneeded = (event) => {
 	db = event.target.result;
@@ -43,17 +43,10 @@ request.onupgradeneeded = (event) => {
 
 let format = (value) => (value < 10) ? `0${value}` : value;
 
-let showMessage = (message) =>{
-	showSuccessMessageModal(message);
-}
-
 let addNewMessage = (name, subject, message, color, timeStamp) => {
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
 	let request = objectStore.add({Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp});
-
-	request.onsuccess = (event) => {
-	}
 }
 
 let editMessage = (msgID, name, subject, message, color, timeStamp) => {
@@ -61,20 +54,16 @@ let editMessage = (msgID, name, subject, message, color, timeStamp) => {
 	let objectStore = transaction.objectStore("messageTable");
 	let editedObj = {messageID: msgID, Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp}	
 	var request = objectStore.put(editedObj);
-	request.onsuccess = function(event){
-	}
 }
 
 let deleteMessage = (msgID) =>{
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
 	var request = objectStore.delete(msgID);
-	request.onsuccess = function(event){
-	}
 }
 
-let constructMessagePreview = (animationDirection, messageID, name, subject, message, color, timeStamp) =>{
-	let preview = `<div class="row custom-row">
+let constructMessagePreview = (animationDirection, messageID, name, subject, message, color, timeStamp) =>
+					 `<div class="row custom-row">
 						<div class="small-1 medium-2 columns">
 						</div>
 						<div  id="${messageID}" class="small-10 medium-8 columns custom-columns message-container animated ${animationDirection} ${color}">
@@ -99,8 +88,7 @@ let constructMessagePreview = (animationDirection, messageID, name, subject, mes
 						<div class="small-1 medium-2 columns">	
 						</div>
 					</div>`
-	return preview;
-};
+
 
 let getAllMessagePreview = (animationDirection) =>{
 	let transaction = db.transaction(["messageTable"],"readwrite");
@@ -109,7 +97,7 @@ let getAllMessagePreview = (animationDirection) =>{
 	
 	$messagePreviewContainer.empty();
 	
-	request.onsuccess = function (event) {
+	request.onsuccess = (event) =>{
 		var	cursor = event.target.result;
 		
 		if(cursor){
@@ -124,14 +112,32 @@ let getAllMessagePreview = (animationDirection) =>{
 			cursor.continue();
 			$('#open-message-btn-' + messageID).on('click', () =>{
 				viewMessage(messageID);
+			}).on('mouseenter', () =>{
+				$('#open-message-btn-' + messageID).removeClass('animated rubberBand');
+				$('#open-message-btn-' + messageID).addClass('animated rubberBand');
+				$('#open-message-btn-' + messageID).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+					$('#open-message-btn-' + messageID).removeClass('animated rubberBand');
+				})
 			});
 
 			$('#edit-message-btn-' + messageID).on('click', () =>{
 				showEditMessageModal(messageID);
+			}).on('mouseenter', () =>{
+				$('#edit-message-btn-' + messageID).removeClass('animated rubberBand');
+				$('#edit-message-btn-' + messageID).addClass('animated rubberBand');
+				$('#edit-message-btn-' + messageID).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+					$('#edit-message-btn-' + messageID).removeClass('animated rubberBand');
+				})
 			});
 
 			$('#delete-message-btn-' + messageID).on('click', () =>{
 				showDeleteMessageModal(messageID);
+			}).on('mouseenter', () =>{
+				$('#delete-message-btn-' + messageID).removeClass('animated rubberBand');
+				$('#delete-message-btn-' + messageID).addClass('animated rubberBand');
+				$('#delete-message-btn-' + messageID).on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+					$('#delete-message-btn-' + messageID).removeClass('animated rubberBand');
+				})
 			});
 		}
 	}
@@ -177,7 +183,13 @@ $saveMessageCloseBtn.on('click', () =>{
 	hideNewMessageModalCloseBtn();
 	setTimeout(() =>{
 		$saveMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$saveMessageCloseBtn.removeClass('animated rubberBand');
+	$saveMessageCloseBtn.addClass('animated rubberBand');
+	$saveMessageCloseBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$saveMessageCloseBtn.removeClass('animated rubberBand');
+	})
 });
 
 $saveMessageSaveBtn.on('click', () =>{
@@ -188,7 +200,7 @@ $saveMessageSaveBtn.on('click', () =>{
 	let $name  = $('#save-modal-name').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let time = [{
 					"date": format(currentdate.getDate()),
-					"month": format(currentdate.getMonth()),
+					"month": monthNames[currentdate.getMonth()],
 					"year": format(currentdate.getFullYear()),
 					"hour": format(currentdate.getHours()),
 					"minute": format(currentdate.getMinutes()),
@@ -198,8 +210,14 @@ $saveMessageSaveBtn.on('click', () =>{
 	hideNewMessageModal();
 	setTimeout(() =>{
 		$saveMessageModal.css('display', 'none');
-		showMessage(' Message has been added successfully');
-	}, 1000);
+		showSuccessMessageModal(' Message has been added successfully');
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$saveMessageSaveBtn.removeClass('animated rubberBand');
+	$saveMessageSaveBtn.addClass('animated rubberBand');
+	$saveMessageSaveBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$saveMessageSaveBtn.removeClass('animated rubberBand');
+	})
 });
 
 //Edit Message Modal
@@ -213,7 +231,7 @@ let setEditMessageModalFields = (messageID) =>{
 	let author;
 	let time;
 
-	request.onsuccess = function(event){
+	request.onsuccess = (event) => {
 		if(request.result) {
 			$('#modal-overlay-edit-message').data("messageID", request.result.messageID);
 			$('#edit-modal-subject').val(request.result.Subject);
@@ -245,7 +263,7 @@ $editMessageModalSaveBtn.on('click', () =>{
 	let $msgID = $('#modal-overlay-edit-message').data("messageID");
 	let time = [{
 					"date": format(currentdate.getDate()),
-					"month": format(currentdate.getMonth()),
+					"month": monthNames[currentdate.getMonth()],
 					"year": format(currentdate.getFullYear()),
 					"hour": format(currentdate.getHours()),
 					"minute": format(currentdate.getMinutes()),
@@ -256,15 +274,27 @@ $editMessageModalSaveBtn.on('click', () =>{
 	getAllMessagePreview(animationFlowDown);
 	setTimeout(() =>{
 		$editMessageModal.css('display', 'none');
-		showMessage(' Message has been modified successfully');
-	}, 1000);
-})
+		showSuccessMessageModal(' Message has been modified successfully');
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$editMessageModalSaveBtn.removeClass('animated rubberBand');
+	$editMessageModalSaveBtn.addClass('animated rubberBand');
+	$editMessageModalSaveBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$editMessageModalSaveBtn.removeClass('animated rubberBand');
+	})
+});
 
 $editMessageModalCloseBtn.on('click', () =>{
 	hideEditMessageModal();
 	setTimeout(() =>{
 		$editMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$editMessageModalCloseBtn.removeClass('animated rubberBand');
+	$editMessageModalCloseBtn.addClass('animated rubberBand');
+	$editMessageModalCloseBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$editMessageModalCloseBtn.removeClass('animated rubberBand');
+	})
 });
 
 //Delete message modal
@@ -290,26 +320,30 @@ $deleteMessageModalYupBtn.on('click', () =>{
 	getAllMessagePreview(animationFlowUp);
 	setTimeout(() =>{
 		$deleteMessageModal.css('display', 'none');
-		showMessage(' Message has been successfully deleted');
-	}, 1000);
+		showSuccessMessageModal(' Message has been successfully deleted');
+	}, timeoutDuration);
 })
 
 $deleteMessageModalCloseBtn.on('click', () =>{
 	hideDeleteMessageModal();
 	setTimeout(() =>{
 		$deleteMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$deleteMessageModalCloseBtn.removeClass('animated rubberBand');
+	$deleteMessageModalCloseBtn.addClass('animated rubberBand');
+	$deleteMessageModalCloseBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$deleteMessageModalCloseBtn.removeClass('animated rubberBand');
+	})
 });
 
 $deleteMessageModalNopeBtn.on('click', () =>{
 	hideDeleteMessageModal();
 	setTimeout(() =>{
 		$deleteMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
 });
 
-
-//#######################################################
 // Success Message Modal
 let showSuccessMessageModal = (message) =>{
 	$('#success-modal-message').html(message);
@@ -329,14 +363,20 @@ $successModalOkayButton.on('click', () =>{
 	hideSuccessMessageModal();
 	setTimeout(() =>{
 		$successMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
 });
 
 $successModalCloseButton.on('click', () =>{
 	hideSuccessMessageModal();
 	setTimeout(() =>{
 		$successMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$successModalCloseButton.removeClass('animated rubberBand');
+	$successModalCloseButton.addClass('animated rubberBand');
+	$successModalCloseButton.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$successModalCloseButton.removeClass('animated rubberBand');
+	})
 });
 
 let setViewMessageValues = (subject, message, author, timeStamp) =>{
@@ -362,7 +402,7 @@ let viewMessage = (messageID) =>{
 	let author;
 	let time;
 
-	request.onsuccess = function(event){
+	request.onsuccess = (event) =>{
 		if(request.result) {
 			subject = request.result.Subject;
 			message = request.result.Message;
@@ -389,25 +429,27 @@ $viewMessageModalCloseBtn.on('click', () =>{
 	closeMessage();
 	setTimeout(() =>{
 		$viewMessageModal.css('display', 'none');
-	}, 500);
+	}, timeoutDuration);
+}).on('mouseenter', () =>{
+	$viewMessageModalCloseBtn.removeClass('animated rubberBand');
+	$viewMessageModalCloseBtn.addClass('animated rubberBand');
+	$viewMessageModalCloseBtn.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () =>{
+		$viewMessageModalCloseBtn.removeClass('animated rubberBand');
+	})
 });
 
 //get all messages
 $( document ).on('ready',() =>{
 	setTimeout(()=>{
 		getAllMessagePreview(animationFlowDown);
-	},1000);
+	},timeoutDuration);
 })
-
-let $timer = ('#save-modal-current-time');
-
-
 
 setInterval(() =>{
 	let currentTime = new Date();
 
 	let date =	format(currentTime.getDate());
-	let month =	format(currentTime.getMonth());
+	let month =	monthNames[currentTime.getMonth()];
 	let	year = format(currentTime.getFullYear());
 
 	let	hour = format(currentTime.getHours());
@@ -418,10 +460,10 @@ setInterval(() =>{
 			date_range
 		</i> ${date} - ${month} - ${year} 
 
-		<i class="material-icons label-icon" style="color: #999999">
+		<i class="material-icons label-icon " style="color: #999999">
 			access_time
 		</i> ${hour} : ${minutes} : ${seconds}`;
 
 	$('#save-modal-current-time').html(message);
 	$('#edit-modal-current-time').html(message);
-}, 1000);
+}, intervalDuration);
