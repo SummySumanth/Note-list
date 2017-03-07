@@ -392,3 +392,28 @@ $( document ).on('ready',() =>{
 		getAllMessagePreview();
 	},1000);
 })
+
+let $timer = ('#save-modal-current-time');
+
+setInterval(() =>{
+	let currentTime = new Date();
+
+	let date =	currentTime.getDate();
+	let month =	currentTime.getMonth();
+	let	year = currentTime.getFullYear();
+
+	let	hour = currentTime.getHours();
+	let	minutes = currentTime.getMinutes();
+	let seconds = currentTime.getSeconds();
+
+	let message = `<i class="material-icons label-icon" style="color: #999999">
+			date_range
+		</i> ${date} - ${month} - ${year} 
+
+		<i class="material-icons label-icon" style="color: #999999">
+			access_time
+		</i> ${hour} : ${minutes} : ${seconds}`;
+
+	$('#save-modal-current-time').html(message);
+	$('#edit-modal-current-time').html(message);
+}, 1000);
