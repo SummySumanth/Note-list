@@ -1,8 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to Note It !
 
-You can use the [editor on GitHub](https://github.com/SummySumanth/Note-list/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+You can use the [Note IT](https://summysumanth.github.io/Note-list/) to keep notes of your day to day life and this stores in your browser database (IndexedDB) and it is 100% privacy proof !
 
 ### Markdown
 
