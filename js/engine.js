@@ -52,10 +52,14 @@ let constructMessagePreview = (messageID, name, subject, message, color, timeSta
 						<div  id="${messageID}" class="small-10 medium-8 columns custom-columns message-container animated slideInDown ${color}">
 							<div class="row message-preview">
 								<div class="small-4 columns text-left">
-									<span class="msg-subject" >${subject}</span>
+									<i class="material-icons label-icon">turned_in_not</i><span class="msg-subject" >${subject}</span>
 								</div>
 								<div class="small-4 columns">
-									<span class="msg-date-time" >${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} @ ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}</span>
+										<i class="material-icons label-icon" >
+							date_range
+						</i> <span class="msg-date-time" >${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} <i class="material-icons label-icon">
+							access_time
+						</i> ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}</span>
 								</div>
 								<div class="small-4 columns text-right">
 									<i id="open-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
@@ -184,7 +188,12 @@ let setViewMessageValues = (subject, message, author, timeStamp) =>{
 	$('#view-modal-Subject-content').html(subject);
 	$('#view-modal-Subject-message').html(message);
 	$('#view-modal-Subject-author').html(author);
-	$('#view-modal-current-time').html(`${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} @ ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}`);
+	$('#view-modal-current-time').html(`<i class="material-icons label-icon" style="color: #999999">
+							date_range
+						</i> ${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} <i class="material-icons label-icon" style="color: #999999">
+							access_time
+						</i> ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}`);
+		
 }
 
 //Show Message
@@ -205,18 +214,34 @@ let viewMessage = (messageID) =>{
 			message = request.result.Message;
 			author = request.result.Name;
 			time = request.result.Timestamp[0];
+			console.log('time from view meessage');
+			console.log(subject);
+			console.log(message);
+			console.log(author);
+			console.log(time);
+			setViewMessageValues(subject, message, author, time);
 		}
 	}
 
-	setViewMessageValues(subject, message, author, time);
+	
 	$viewMessageModal
 		.css('display', 'block')
 		.removeClass('animated fadeOut')
 		.addClass('animated fadeIn');
 }
 
-$viewMessageModalCloseBtn.on('click', () =>{
+let closeMessage = () =>{
+	$viewMessageModal
+		.removeClass('animated fadeIn')
+		.addClass('animated fadeOut');
+}
 
+
+$viewMessageModalCloseBtn.on('click', () =>{
+	closeMessage();
+	setTimeout(() =>{
+		$viewMessageModal.css('display', 'none');
+	}, 500);
 });
 
 //get all messages
