@@ -13,6 +13,10 @@ body {
     text-rendering: optimizeLegibility !important;
 }
 
+.pointer-cursor{
+	cursor: pointer !important;
+}
+
 i.btn{
 	cursor: pointer;
 	-webkit-touch-callout: none; /* iOS Safari */
@@ -25,7 +29,7 @@ i.btn{
 }
 
 i{
-	cursor: default;
+	/*cursor: default;*/
 	-webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -127,42 +131,42 @@ i{
 	font-size: 27px !important;
 	font-style: bold;
 }
-.bg-white{
+.White{
 	background-color: #fff !important;
 	color: #474747;
 }
 
-.bg-red{
+.Red{
 	background-color: rgb(255, 138, 128) !important;
 	color: #474747;
 }
 
-.bg-orange{
+.Orange{
 	background-color: rgb(255, 209, 128) !important;
 	color: #474747;
 }
 
-.bg-yellow{
+.Yellow{
 	background-color: rgb(255, 255, 141) !important;
 	color: #474747;
 }
 
-.bg-grey{
+.Grey{
 	background-color: rgb(207, 216, 220) !important;
 	color: #474747;
 }
 
-.bg-blue{
+.Blue{
 	background-color: rgb(128, 216, 255) !important;
 	color: #474747;
 }
 
-.bg-teal{
+.Teal{
 	background-color: rgb(167, 255, 235) !important;
 	color: #474747;
 }
 
-.bg-green{
+.Green{
 	background-color: rgb(204, 255, 144) !important;
 	color: #474747;
 }
