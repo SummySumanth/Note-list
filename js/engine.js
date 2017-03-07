@@ -10,6 +10,10 @@ let $successModalCloseButton = $('#success-modal-close-btn');
 let $viewMessageModal = $('#modal-overlay-view-message');
 let $viewMessageModalCloseBtn = $('#view-modal-close-btn');
 
+let $editMessageModal = $('#modal-overlay-edit-message');
+let $editMessageModalCloseBtn = $('#edit-modal-close-btn');
+let $editMessageModalSaveBtn = $('#edit-modal-save-btn');
+
 let $messagePreviewContainer = $('#message-preview-container');
 
 let db;
@@ -45,6 +49,24 @@ let addNewMessage = (name, subject, message, color, timeStamp) => {
 	}
 }
 
+let editMessage = (msgID, name, subject, message, color, timeStamp) => {
+	let transaction = db.transaction(["messageTable"],"readwrite");
+	let objectStore = transaction.objectStore("messageTable");
+	let editedObj = {messageID: msgID, Name: name, Subject: subject, Message: message, Color: color, Timestamp: timeStamp}
+
+	// id ID exists, it will modify the entry, if not it will edit the entry
+	console.log('got message id as ' + msgID);
+	var request = objectStore.put(editedObj);
+	request.onsuccess = function(event){
+		var obj = event.target.result;
+		console.log(obj);
+	}
+
+	request.onsuccess = (event) => {
+		console.log('added to db successfully');
+	}
+}
+
 let constructMessagePreview = (messageID, name, subject, message, color, timeStamp) =>{
 	let preview = `<div class="row custom-row">
 						<div class="small-1 medium-2 columns">
@@ -63,7 +85,7 @@ let constructMessagePreview = (messageID, name, subject, message, color, timeSta
 								</div>
 								<div class="small-4 columns text-right">
 									<i id="open-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
-									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
+									<i id="edit-message-btn-${messageID}" data-messageID="${messageID}" class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
 									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
 								</div>
 							</div>
@@ -101,6 +123,11 @@ let getAllMessagePreview = () =>{
 				console.log('open message clicked, id is ' + messageID );
 				viewMessage(messageID);
 			});
+
+			$('#edit-message-btn-' + messageID).on('click', () =>{
+				console.log('edit message clicked, id is ' + messageID );
+				showEditMessageModal(messageID);
+			});
 		}
 	}
 }
@@ -108,7 +135,16 @@ let getAllMessagePreview = () =>{
 //######################   Event Listeners ############################
 
 //New message modal
+
+let clearNewMessageModalContents = () =>{
+	$('#save-modal-subject').val("");
+	$('#save-modal-message-area').val("");
+	$('#save-modal-color-select').val("");
+	$('#save-modal-name').val("");
+}
+
 let showNewMessageModal = () => {
+	clearNewMessageModalContents();
 	$saveMessageModal
 		.css('display', 'block')
 		.removeClass('animated fadeOut')
@@ -122,12 +158,18 @@ let hideNewMessageModal = () => {
 	getAllMessagePreview();
 }
 
+let hideNewMessageModalCloseBtn = () => {
+	$saveMessageModal
+		.removeClass('animated fadeIn')
+		.addClass('animated fadeOut');
+}
+
 $addNewMessage.on('click', () =>{
 	showNewMessageModal();
 });
 
 $saveMessageCloseBtn.on('click', () =>{
-	hideNewMessageModal();
+	hideNewMessageModalCloseBtn();
 	setTimeout(() =>{
 		$saveMessageModal.css('display', 'none');
 	}, 500);
@@ -153,6 +195,73 @@ $saveMessageSaveBtn.on('click', () =>{
 		$saveMessageModal.css('display', 'none');
 		showMessage(' Message has been added successfully');
 	}, 1000);
+});
+
+//Edit Message Modal
+let setEditMessageModalFields = (messageID) =>{
+	let transaction = db.transaction(["messageTable"],"readwrite");
+	let objectStore = transaction.objectStore("messageTable");
+	let request = objectStore.get(messageID);
+
+	let subject;
+	let message;
+	let author;
+	let time;
+
+	request.onsuccess = function(event){
+		if(request.result) {
+			console.log(request.result.messageID);
+			$('#modal-overlay-edit-message').data("messageID", request.result.messageID);
+			$('#edit-modal-subject').val(request.result.Subject);
+			$('#edit-modal-color-select').val(request.result.Color);
+			$('#edit-modal-message-area').val(request.result.Message);
+			$('#edit-modal-name').val(request.result.Name);
+		}
+	}
+}
+let showEditMessageModal = (messageID) =>{
+	setEditMessageModalFields(messageID);
+	$editMessageModal
+		.css('display', 'block')
+		.removeClass('animated fadeOut')
+		.addClass('animated fadeIn');
+}
+let hideEditMessageModal = () =>{
+	$editMessageModal
+		.removeClass('animated fadeIn')
+		.addClass('animated fadeOut');
+}
+
+$editMessageModalSaveBtn.on('click', () =>{
+	let currentdate = new Date();
+	let $subject = $('#edit-modal-subject').val();
+	let $message  = $('#edit-modal-message-area').val();
+	let $color  = $('#edit-modal-color-select').val();
+	let $name  = $('#edit-modal-name').val();
+	let $msgID = $('#modal-overlay-edit-message').data("messageID");
+	console.log($msgID);
+	let time = [{
+					"date": currentdate.getDate(),
+					"month": currentdate.getMonth(),
+					"year": currentdate.getFullYear(),
+					"hour": currentdate.getHours(),
+					"minute": currentdate.getMinutes(),
+					"second": currentdate.getSeconds(),
+				}];
+	editMessage($msgID, $name, $subject, $message, $color, time);
+	hideEditMessageModal();
+	getAllMessagePreview();
+	setTimeout(() =>{
+		$editMessageModal.css('display', 'none');
+		showMessage(' Message has been modified successfully');
+	}, 1000);
+})
+
+$editMessageModalCloseBtn.on('click', () =>{
+	hideEditMessageModal();
+	setTimeout(() =>{
+		$editMessageModal.css('display', 'none');
+	}, 500);
 });
 
 // Success Message Modal
