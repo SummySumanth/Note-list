@@ -177,6 +177,11 @@ i{
 .delete-modal{
 	display: none;
 }
+
+.success-modal{
+	display: none;
+}
+
 .modal-overlay{
   /*opacity: 0;*/
   background-color: rgba(0,0,0,0.5);
