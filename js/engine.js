@@ -21,6 +21,9 @@ let $deleteMessageModalYupBtn = $('#delete-modal-yup-btn');
 
 let $messagePreviewContainer = $('#message-preview-container');
 
+let animationFlowDown = 'slideInDown';
+let animationFlowUp = 'slideInUp';
+
 let db;
 let request = window.indexedDB.open("notePad2", 3);
 
@@ -37,6 +40,8 @@ request.onupgradeneeded = (event) => {
 	db = event.target.result;
 	db.createObjectStore("messageTable",{keyPath:"messageID", autoIncrement:true});
 };
+
+let format = (value) => (value < 10) ? `0${value}` : value;
 
 let showMessage = (message) =>{
 	showSuccessMessageModal(message);
@@ -68,11 +73,11 @@ let deleteMessage = (msgID) =>{
 	}
 }
 
-let constructMessagePreview = (messageID, name, subject, message, color, timeStamp) =>{
+let constructMessagePreview = (animationDirection, messageID, name, subject, message, color, timeStamp) =>{
 	let preview = `<div class="row custom-row">
 						<div class="small-1 medium-2 columns">
 						</div>
-						<div  id="${messageID}" class="small-10 medium-8 columns custom-columns message-container animated slideInDown ${color}">
+						<div  id="${messageID}" class="small-10 medium-8 columns custom-columns message-container animated ${animationDirection} ${color}">
 							<div class="row message-preview">
 								<div class="small-4 columns text-left">
 									<i class="material-icons label-icon">turned_in_not</i><span class="msg-subject" >${subject}</span>
@@ -97,7 +102,7 @@ let constructMessagePreview = (messageID, name, subject, message, color, timeSta
 	return preview;
 };
 
-let getAllMessagePreview = () =>{
+let getAllMessagePreview = (animationDirection) =>{
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
 	let request = objectStore.openCursor();
@@ -114,8 +119,7 @@ let getAllMessagePreview = () =>{
 			let message = cursor.value.Message;
 			let color = cursor.value.Color;
 			let time = cursor.value.Timestamp[0];
-
-			let messagePreview = constructMessagePreview(messageID, name, subject, message, color, time);
+			let messagePreview = constructMessagePreview(animationDirection, messageID, name, subject, message, color, time);
 			$('#message-preview-container').prepend(messagePreview);
 			cursor.continue();
 			$('#open-message-btn-' + messageID).on('click', () =>{
@@ -156,7 +160,7 @@ let hideNewMessageModal = () => {
 	$saveMessageModal
 		.removeClass('animated fadeIn')
 		.addClass('animated fadeOut');
-	getAllMessagePreview();
+	getAllMessagePreview(animationFlowDown);
 }
 
 let hideNewMessageModalCloseBtn = () => {
@@ -183,12 +187,12 @@ $saveMessageSaveBtn.on('click', () =>{
 	let $color  = $('#save-modal-color-select').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let $name  = $('#save-modal-name').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let time = [{
-					"date": currentdate.getDate(),
-					"month": currentdate.getMonth(),
-					"year": currentdate.getFullYear(),
-					"hour": currentdate.getHours(),
-					"minute": currentdate.getMinutes(),
-					"second": currentdate.getSeconds(),
+					"date": format(currentdate.getDate()),
+					"month": format(currentdate.getMonth()),
+					"year": format(currentdate.getFullYear()),
+					"hour": format(currentdate.getHours()),
+					"minute": format(currentdate.getMinutes()),
+					"second": format(currentdate.getSeconds()),
 				}];
 	addNewMessage($name, $subject, $message, $color, time);
 	hideNewMessageModal();
@@ -249,7 +253,7 @@ $editMessageModalSaveBtn.on('click', () =>{
 				}];
 	editMessage($msgID, $name, $subject, $message, $color, time);
 	hideEditMessageModal();
-	getAllMessagePreview();
+	getAllMessagePreview(animationFlowDown);
 	setTimeout(() =>{
 		$editMessageModal.css('display', 'none');
 		showMessage(' Message has been modified successfully');
@@ -277,11 +281,13 @@ let hideDeleteMessageModal = () =>{
 		.addClass('animated fadeOut');
 }
 
+
+
 $deleteMessageModalYupBtn.on('click', () =>{
 	let $msgID = $('#modal-overlay-delete-message').data("messageID");
 	deleteMessage($msgID);
 	hideDeleteMessageModal();
-	getAllMessagePreview();
+	getAllMessagePreview(animationFlowUp);
 	setTimeout(() =>{
 		$deleteMessageModal.css('display', 'none');
 		showMessage(' Message has been successfully deleted');
@@ -389,22 +395,24 @@ $viewMessageModalCloseBtn.on('click', () =>{
 //get all messages
 $( document ).on('ready',() =>{
 	setTimeout(()=>{
-		getAllMessagePreview();
+		getAllMessagePreview(animationFlowDown);
 	},1000);
 })
 
 let $timer = ('#save-modal-current-time');
 
+
+
 setInterval(() =>{
 	let currentTime = new Date();
 
-	let date =	currentTime.getDate();
-	let month =	currentTime.getMonth();
-	let	year = currentTime.getFullYear();
+	let date =	format(currentTime.getDate());
+	let month =	format(currentTime.getMonth());
+	let	year = format(currentTime.getFullYear());
 
-	let	hour = currentTime.getHours();
-	let	minutes = currentTime.getMinutes();
-	let seconds = currentTime.getSeconds();
+	let	hour = format(currentTime.getHours());
+	let	minutes = format(currentTime.getMinutes());
+	let seconds = format(currentTime.getSeconds());
 
 	let message = `<i class="material-icons label-icon" style="color: #999999">
 			date_range
