@@ -140,7 +140,7 @@ let getAllMessagePreview = () =>{
 let clearNewMessageModalContents = () =>{
 	$('#save-modal-subject').val("");
 	$('#save-modal-message-area').val("");
-	$('#save-modal-color-select').val("");
+	$('#save-modal-color-select').val("White");
 	$('#save-modal-name').val("");
 }
 
@@ -178,10 +178,10 @@ $saveMessageCloseBtn.on('click', () =>{
 
 $saveMessageSaveBtn.on('click', () =>{
 	let currentdate = new Date();
-	let $subject = $('#save-modal-subject').val();
-	let $message  = $('#save-modal-message-area').val();
-	let $color  = $('#save-modal-color-select').val();
-	let $name  = $('#save-modal-name').val();
+	let $subject = $('#save-modal-subject').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $message  = $('#save-modal-message-area').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $color  = $('#save-modal-color-select').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $name  = $('#save-modal-name').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let time = [{
 					"date": currentdate.getDate(),
 					"month": currentdate.getMonth(),
@@ -234,10 +234,10 @@ let hideEditMessageModal = () =>{
 
 $editMessageModalSaveBtn.on('click', () =>{
 	let currentdate = new Date();
-	let $subject = $('#edit-modal-subject').val();
-	let $message  = $('#edit-modal-message-area').val();
-	let $color  = $('#edit-modal-color-select').val();
-	let $name  = $('#edit-modal-name').val();
+	let $subject = $('#edit-modal-subject').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $message  = $('#edit-modal-message-area').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $color  = $('#edit-modal-color-select').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	let $name  = $('#edit-modal-name').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let $msgID = $('#modal-overlay-edit-message').data("messageID");
 	let time = [{
 					"date": currentdate.getDate(),
