@@ -7,7 +7,7 @@ let $successMessageModal = $('#modal-overlay-success-message');
 let $successModalOkayButton = $('#success-modal-okay-btn');
 let $successModalCloseButton = $('#success-modal-close-btn');
 
-let $messagePreviewContainer $('#message-preview-container');
+let $messagePreviewContainer = $('#message-preview-container');
 
 let db;
 let request = window.indexedDB.open("notePad2", 3);
@@ -42,6 +42,31 @@ let addNewMessage = (name, subject, message, color, timeStamp) => {
 	}
 }
 
+let constructMessagePreview = (messageID, name, subject, message, color, timeStamp) =>{
+	let preview = `<div class="row custom-row">
+						<div class="small-1 medium-2 columns">
+						</div>
+						<div  id="${messageID}" class="small-10 medium-8 columns custom-columns message-container animated slideInDown ${color}">
+							<div class="row message-preview">
+								<div class="small-4 columns text-left">
+									<span class="msg-subject" >${subject}</span>
+								</div>
+								<div class="small-4 columns">
+									<span class="msg-date-time" >${timeStamp.date} - ${timeStamp.month} - ${timeStamp.year} @ ${timeStamp.hour} : ${timeStamp.minute} : ${timeStamp.second}</span>
+								</div>
+								<div class="small-4 columns text-right">
+									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers open-message-btn btn">open_in_new</i>
+									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers edit-message-btn btn">mode_edit</i>
+									<i data-messageID="${messageID}" class="material-icons msg-prv-controllers delete-message-btn btn">delete</i>
+								</div>
+							</div>
+						</div>
+						<div class="small-1 medium-2 columns">	
+						</div>
+					</div>`
+	return preview;
+};
+
 let getAllMessagePreview = () =>{
 	let transaction = db.transaction(["messageTable"],"readwrite");
 	let objectStore = transaction.objectStore("messageTable");
@@ -53,19 +78,19 @@ let getAllMessagePreview = () =>{
 
 		if(cursor){
 			console.log(cursor.value);
-			$('#tableBody').prepend(`<tr>
-				<td>${cursor.value.itemId}</td>
-				<td>${cursor.value.stuName}</td>
-				<td>${cursor.value.stuSub}</td>
-				<td>
-					<input type="button" id="${cursor.value.itemId}" class="edit" value="Edit">
-					<input type="button" id="${cursor.value.itemId}" class="delete" value="Delete">
-				</td>
-				</tr>`);
-			cursor.continue()
+
+			let messageID = cursor.value.messageID;
+			let name = cursor.value.Name;
+			let subject = cursor.value.Subject;
+			let message = cursor.value.Message;
+			let color = cursor.value.Color;
+			let time = cursor.value.Timestamp[0];
+
+			let messagePreview = constructMessagePreview(messageID, name, subject, message, color, time);
+			$('#message-preview-container').prepend(messagePreview);
+
+			cursor.continue();
 		}
-
-
 	}
 }
 
@@ -83,6 +108,7 @@ let hideNewMessageModal = () => {
 	$saveMessageModal
 		.removeClass('animated fadeIn')
 		.addClass('animated fadeOut');
+	getAllMessagePreview();
 }
 
 $addNewMessage.on('click', () =>{
@@ -146,3 +172,10 @@ $successModalCloseButton.on('click', () =>{
 		$successMessageModal.css('display', 'none');
 	}, 500);
 });
+
+$( document ).on('ready',() =>{
+	setTimeout(()=>{
+		getAllMessagePreview();
+	},1000)
+	
+})
