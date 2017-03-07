@@ -244,12 +244,12 @@ $editMessageModalSaveBtn.on('click', () =>{
 	let $name  = $('#edit-modal-name').val().replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	let $msgID = $('#modal-overlay-edit-message').data("messageID");
 	let time = [{
-					"date": currentdate.getDate(),
-					"month": currentdate.getMonth(),
-					"year": currentdate.getFullYear(),
-					"hour": currentdate.getHours(),
-					"minute": currentdate.getMinutes(),
-					"second": currentdate.getSeconds(),
+					"date": format(currentdate.getDate()),
+					"month": format(currentdate.getMonth()),
+					"year": format(currentdate.getFullYear()),
+					"hour": format(currentdate.getHours()),
+					"minute": format(currentdate.getMinutes()),
+					"second": format(currentdate.getSeconds()),
 				}];
 	editMessage($msgID, $name, $subject, $message, $color, time);
 	hideEditMessageModal();
