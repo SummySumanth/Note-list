@@ -140,6 +140,12 @@ let getAllMessagePreview = (animationDirection) =>{
 				})
 			});
 		}
+
+		if($('#message-preview-container').html() === ""){
+			setTimeout(() =>{
+				showSuccessMessageModal("There are no messages saved in database, please add new message");
+			}, 1000);
+		}
 	}
 }
 
@@ -320,7 +326,11 @@ $deleteMessageModalYupBtn.on('click', () =>{
 	getAllMessagePreview(animationFlowUp);
 	setTimeout(() =>{
 		$deleteMessageModal.css('display', 'none');
-		showSuccessMessageModal(' Message has been successfully deleted');
+		if($('#message-preview-container').html() != ""){
+			showSuccessMessageModal(' Message has been successfully deleted');
+		}
+			
+
 	}, timeoutDuration);
 })
 
